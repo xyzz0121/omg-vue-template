@@ -1,145 +1,117 @@
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
-const VueLoaderPlugin = require('vue-loader/lib/plugin');
-
-
+const path = require('path')
+const webpack = require('webpack')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const VueLoaderPlugin = require('vue-loader/lib/plugin')
 module.exports = {
-	mode: 'development',
-	devServer: {
-		hot: true,
-		port: 3000,
-		contentBase: './dist'
-	},
-	//入口文件 TODO:path统一管理
-	entry: {
-		main: ["@babel/polyfill", path.resolve(__dirname, '../src/main.js')]
-	},
-	output: {
-		//配置打包文件输入
-		path: path.resolve(__dirname, '../dist'),
-		//生成的js文件名
-		filename: 'js/[name].[hash:8].js',
-		//生成的chunk名
-		chunkFilename: 'js/[name].[hash:8].js',
-		//资源引用路径
-		publicPath: '/'
-	},
-	module: {
-		rules: [
-			{
-				test: /\.vue$/,
-				use: [{
-						loader: 'cache-loader'
-					},
-					{
-						loader: 'thread-loader'
-					},
-					{
-						loader: 'vue-loader',
-						options: {
-							compilerOptions: {
-								preserveWhitespace: false
-							},
-						}
-					}
-				]
-			},
-			{
-				test: /\.jsx?$/,
-				use: [{
-						loader: 'cache-loader'
-					},
-					{
-						loader: 'thread-loader'
-					},
-					{
-						loader: 'babel-loader'
-					}
-				]
-			},
-			{
-        test: /\.(css|scss|sass)$/,
+  entry: {
+    main: path.resolve(__dirname, '../src/index.js')
+  },
+  output: {
+    
+    path: path.resolve(__dirname, '../dist'),
+    
+    filename: 'js/[name].[hash:8].js',
+    
+    chunkFilename: 'js/[name].[hash:8].js',
+    
+    publicPath: '/'
+  },
+  devServer: {
+    hot: true,
+    port: 3000,
+    contentBase: './dist'
+  },
+  resolve: {
+    alias: {
+      vue$: 'vue/dist/vue.runtime.esm.js'
+    },
+    extensions: [
+      '.js',
+      '.vue'
+    ]
+  },
+  module: {
+    rules: [
+      {
+        test: /\.vue$/,
         use: [
           {
-            loader: 'style-loader'
+            loader: 'cache-loader'
           },
           {
-            loader: 'css-loader',
+            loader: 'vue-loader',
             options: {
-              importLoaders: 2
+              compilerOptions: {
+                preserveWhitespace: false
+              },
             }
-          },
-          {
-            loader: 'sass-loader',
-            options: {
-              implementation: require('dart-sass')
-            }
-          },
-          {
-            loader: 'postcss-loader'
           }
         ]
       },
-			{
-				test: /\.(jpe?g|png|gif)$/i,
-				use: [{
-					loader: 'url-loader',
-					options: {
-						limit: 4096,
-						fallback: {
-							loader: 'file-loader',
-							options: {
-								name: 'img/[name].[hash:8].[ext]'
-							}
-						}
-					}
-				}]
-			},
-			{
-				test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-				use: [{
-					loader: 'url-loader',
-					options: {
-						limit: 4096,
-						fallback: {
-							loader: 'file-loader',
-							options: {
-								name: 'media/[name].[hash:8].[ext]'
-							}
-						}
-					}
-				}]
-			},
-			{
-				test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
-				use: [{
-					loader: 'url-loader',
-					options: {
-						limit: 4096,
-						fallback: {
-							loader: 'file-loader',
-							options: {
-								name: 'fonts/[name].[hash:8].[ext]'
-							}
-						}
-					}
-				}]
-			},
-	]
-},
-plugins: [
-	new HtmlWebpackPlugin({
-		inject: true,
-		template: path.resolve(__dirname, '../public/index.html'),
-	}),
-	new VueLoaderPlugin(),
-	new webpack.NamedModulesPlugin(),
-	new webpack.HotModuleReplacementPlugin(),
-	new webpack.DefinePlugin({
-		'process.env': {
-			VUE_APP_BASE_URL: JSON.stringify('http://localhost:3000')
-		}
-	}),
-]
+      {
+        test: /\.jsx?$/,
+        loader: 'babel-loader'
+      },
+
+      {
+        test: /\.(jpe?g|png|gif)$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 4096,
+              fallback: {
+                loader: 'file-loader',
+                options: {
+                  name: 'img/[name].[hash:8].[ext]'
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 4096,
+              fallback: {
+                loader: 'file-loader',
+                options: {
+                  name: 'media/[name].[hash:8].[ext]'
+                }
+              }
+            }
+          }
+        ]
+      },
+      {
+        test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/i,
+        use: [
+          {
+            loader: 'url-loader',
+            options: {
+              limit: 4096,
+              fallback: {
+                loader: 'file-loader',
+                options: {
+                  name: 'fonts/[name].[hash:8].[ext]'
+                }
+              }
+            }
+          }
+        ]
+      },
+    ]
+  },
+  plugins: [
+    new VueLoaderPlugin(),
+    new HtmlWebpackPlugin({
+      template: path.resolve(__dirname, '../public/index.html')
+    }),
+    new webpack.NamedModulesPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+  ]
 }

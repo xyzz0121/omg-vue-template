@@ -1,0 +1,22 @@
+---
+- hosts: servers-{{ ENV }}
+  remote_user: "{{ USER }}"
+  become: true
+  serial: 1
+
+  tasks:
+    - name: Rsync codes
+      synchronize:
+        src: "{{ WSPACE }}/build/"
+        dest: "/data/app/www/{{ WEB_DIR }}/public/telemarketing"
+        dirs: yes
+        mode: push
+        rsync_opts:
+          - "--exclude=.git*"
+
+    - name: Change owner
+      file:
+          path: "/data/app/www/{{ WEB_DIR }}/public/telemarketing"
+          owner: nginx
+          group: nginx
+          recurse: yes

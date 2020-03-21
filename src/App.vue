@@ -1,6 +1,6 @@
 <template>
   <div class="App">
-    Hello World
+    Hello World!!
   </div>
 </template>
 
@@ -15,7 +15,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.App {
-    background: #000;
+.App{
+  background: #0f0;
 }
 </style>
