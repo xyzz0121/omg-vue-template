@@ -1,6 +1,6 @@
 <template>
   <div class="App">
-    Hello World!!
+    <router-view ></router-view>
   </div>
 </template>
 
@@ -10,12 +10,12 @@ export default {
 
   data() {
     return {};
+  },
+  mounted(){
+    console.log(this.$route);
   }
 };
 </script>
 
 <style lang="scss" scoped>
-.App{
-  background: #0f0;
-}
 </style>

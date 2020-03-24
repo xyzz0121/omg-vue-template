@@ -1,6 +1,13 @@
-import Vue from 'vue'
-import App from './App.vue'
+/**
+ * 入口文件
+ * author
+ * time
+ */
+import Vue from 'vue';
+import App from './App.vue';
+import router from './router/index'
 
 new Vue({
+  router,
   render: h => h(App)
 }).$mount('#app')
